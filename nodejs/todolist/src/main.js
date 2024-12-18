@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
 import fs from 'node:fs';
-import { addTask, getTasks } from './main.helpers.js';
+import { addTask, getTasks, rewriteIndexes } from './main.helpers.js';
 
 const taskFile = process.env.NODE_ENV === 'test' ? './test.json' : './tasks.json';
 const program = new Command();
@@ -10,13 +10,6 @@ program.name('task-cli').description('A simple task manager').version('1.0.0');
 
 if (!fs.existsSync(taskFile)) {
   fs.writeFileSync(taskFile, JSON.stringify([]));
-}
-
-function rewriteIndexes(data) {
-  for (let index = 0; index < data.length; index++) {
-    const task = data[index];
-    task.id = index + 1;
-  }
 }
 
 // Adding a new task
@@ -73,8 +66,6 @@ program
   .argument('<id>', 'id of the task to update')
   .argument('<description>', 'id of the task to update')
   .action((id, description) => {
-    console.log('ID ===', id, description);
-
     const data = getTasks(taskFile);
     const taskToUpdate = data.find(task => task.id === parseInt(id));
 

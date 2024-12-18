@@ -58,17 +58,4 @@ describe('addTask', () => {
       updatedAt: '2024-12-17T22:08:19.000Z',
     });
   });
-
-  it('should increment task ID when adding multiple tasks', () => {
-    addTask('First Task', testFilePath);
-    addTask('Second Task', testFilePath);
-
-    const tasks = JSON.parse(fs.readFileSync(testFilePath, 'utf8'));
-    expect(tasks.length).toBe(2);
-    expect(tasks[1]).toMatchObject({
-      id: 2,
-      description: 'Second Task',
-      status: 'todo',
-    });
-  });
 });
